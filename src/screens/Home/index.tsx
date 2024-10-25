@@ -13,14 +13,38 @@ export function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [productName, setProductName] = useState<string>("");
 
+  function handleProductAdd() {
+    const newProduct: Product = {
+      name: productName,
+      isDone: false,
+    };
+
+    setProducts((prevState) => [...prevState, newProduct]);
+    setProductName("");
+  }
+
+  function handleProductRemove(name: string) {
+    setProducts(products.filter((product) => product.name !== name));
+  }
+
+  function handleProductDone(name: string) {
+    setProducts(
+      products.map((product) =>
+        product.name === name
+          ? { ...product, isDone: !product.isDone }
+          : product
+      )
+    );
+  }
+
   return (
     <Container>
       <Input
-        placeholder="Adicione uma tarefa..."
+        placeholder="Adicione um produto..."
         value={productName}
         onChangeText={setProductName}
       ></Input>
-      <Button title="Adicionar"></Button>
+      <Button title="Adicionar" onPress={handleProductAdd}></Button>
       <FlatList
         data={products}
         keyExtractor={(item) => item.name}
@@ -28,8 +52,8 @@ export function Home() {
           <Product
             name={item.name}
             isDone={item.isDone}
-            onDone={() => {}}
-            onRemove={() => {}}
+            onDone={() => handleProductDone(item.name)}
+            onRemove={() => handleProductRemove(item.name)}
           />
         )}
         ListEmptyComponent={<EmptyListComponent />}

@@ -16,7 +16,7 @@ export const Container = styled(TouchableOpacity)<Props>`
   ${({ isDoneStyles }) =>
     isDoneStyles
       ? css`
-          background-color: aqua;
+          background-color: red;
         `
       : css`
           background-color: #fff;
